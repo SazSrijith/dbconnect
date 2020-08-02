@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+	<h1 class="display-4">Provide the details below</h1>
+	<form  method="POST" >
+		{{form.hidden_tag()}}
+		{{form.name.label}}{{form.name()}}<br>
+		{{form.project.label}}&emsp;&nbsp;{{form.project()}}<br>
+		{{form.em_no.label}}&emsp;&nbsp;{{form.em_no()}}<br>
+		{{form.hackrankid.label}}&nbsp;&thinsp;{{form.hackrankid()}}<br>
+		{{form.cert.label}}&emsp;&nbsp;&thinsp;{{form.cert()}}<br>
+		{{form.skill.label}}&emsp;&emsp;&emsp;&emsp;&emsp;{{form.skill()}}<br>
+		{{form.badge.label}}&emsp;&emsp;&emsp;&emsp;{{form.badge()}}<br>
+		{{form.n_s.label}}&emsp;&emsp;&nbsp;{{form.n_s()}}<br>
+		{{form.c_s.label}}{{form.c_s()}}<br>
+		{{form.submit()}}
+	</form>
+</div>
+
+{% endblock %}
