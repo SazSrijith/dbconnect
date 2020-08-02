@@ -1,20 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="jumbotron">
-	<h1 class="display-4">Provide the details below</h1>
-	<form  method="POST" >
+<div class="jumbotron" style="font-family: 'Rowdies', cursive;">
+	<h1 >Provide the details below</h1>
+	<br>
+	<form  method="POST" style="font-family: 'Mukta', sans-serif;">
 		{{form.hidden_tag()}}
-		{{form.name.label}}{{form.name()}}<br>
-		{{form.project.label}}&emsp;&nbsp;{{form.project()}}<br>
-		{{form.em_no.label}}&emsp;&nbsp;{{form.em_no()}}<br>
-		{{form.hackrankid.label}}&nbsp;&thinsp;{{form.hackrankid()}}<br>
-		{{form.cert.label}}&emsp;&nbsp;&thinsp;{{form.cert()}}<br>
-		{{form.skill.label}}&emsp;&emsp;&emsp;&emsp;&emsp;{{form.skill()}}<br>
-		{{form.badge.label}}&emsp;&emsp;&emsp;&emsp;{{form.badge()}}<br>
-		{{form.n_s.label}}&emsp;&emsp;&nbsp;{{form.n_s()}}<br>
-		{{form.c_s.label}}{{form.c_s()}}<br>
-		{{form.submit()}}
+		<table>
+		<thead>
+			
+		</thead>
+		<tbody>
+			<tr>
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form.name.label}}</h5></td>
+				<td ><h5>{{form.name()}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.em_no.label}}</h5></td>
+				<td ><h5>{{form.em_no()}}</h5></td>
+			</tr>
+			<tr>
+				<td style="padding:2px 5px 0px 25px" ><h5>{{form.project.label}}</h5></td>
+				<td ><h5>{{form.project()}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.hackrankid.label}}</h5></td>
+				<td ><h5>{{form.hackrankid()}}</h5></td>
+			</tr>
+			<tr>
+				<td style="padding:2px 5px 0px 25px" ><h5>{{form.cert.label}}</h5></td>
+				<td ><h5>{{form.cert()}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.skill.label}}</h5></td>
+				<td ><h5>{{form.skill()}}</h5></td>
+			</tr>
+			<tr>
+				<td style="padding:2px 5px 0px 25px" ><h5>{{form.badge.label}}</h5></td>
+				<td ><h5>{{form.badge()}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.n_s.label}}</h5></td>
+				<td ><h5>{{form.n_s()}}</h5></td>
+			</tr>
+			<tr>
+				<td style="padding:2px 5px 0px 25px" ><h5>{{form.c_s.label}}</h5></td>
+				<td ><h5>{{form.c_s()}}</h5></td>
+				<td colspan="2" style="padding-left:235px;">{{form.submit()}}</td>
+				
+			</tr>
+			
+		</tbody>
+	</table>
 	</form>
+
 </div>
 
 {% endblock %}
