@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+{%if no == "0"%}
+<div class="jumbotron" style="font-family: 'Rowdies', cursive;">
+		<h1>Update Employee</h1>
+{%else%}
+<div class="jumbotron" style="font-family: 'Rowdies', cursive;">
+		<h1>Remove Employee</h1>
+{%endif%}<br>
+		<form  method="POST" >
+			{{form.hidden_tag()}}
+			<table>
+			<tbody>
+			<tr style="font-family: 'Mukta', sans-serif;">
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form.id.label}}</h5></td>
+				<td ><h5>{{form.id()}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.submit()}}</h5></td>
+			</tr>
+			</tbody>
+			</table>
+		</form>
+
+</div>
+
+{% endblock %}

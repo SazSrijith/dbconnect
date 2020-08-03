@@ -1,25 +1,18 @@
 import os
-
-from forms import AddForm,DelForm
-
-from flask import Flask,render_template,url_for,redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask import Flask
+
+
+basedir=os.path.abspath(os.path.dirname(__file__))
 
 app=Flask(__name__)
 app.config['SECRET_KEY']='mysecretkey'
-
-######################################################
-################ SQL DATABASE SECTION ################
-######################################################
-
-basedir=os.path.abspath(os.path.dirname(__file__))
 
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///'+os.path.join(basedir,'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATION']=False
 
 db=SQLAlchemy(app)
-Migrate(app,db)
+
 
 class Hacker_Rank(db.Model):
 	__tablename__='Hacker Rank'
@@ -81,66 +74,4 @@ class Pragati(db.Model):
 
 	def __repr__(self):
 		return f"\nProject: {self.project}\n<br>Employee No: {self.em_num}\nEmployeeName: {self.em_name}\nNo of Submission: {self.no_sub}"
-
-
-#######################################################
-########### VIEW FUNCTIONS -- HAVE FORMS ##############
-#######################################################
-
-@app.route('/')
-def home():
-	return render_template('home.html')
-
-@app.route('/add',methods=['GET','POST'])
-def add():
-
-	form=AddForm()
-
-	if form.validate_on_submit():
-		name=form.name.data
-		project=form.project.data
-		em_no=form.em_no.data
-		hackrankid=form.hackrankid.data
-		cert=form.cert.data
-		skill=form.skill.data
-		badge=form.badge.data
-		n_s=form.n_s.data
-		c_s=form.c_s.data
-
-		new_emp=Hacker_Rank(project,em_no,name,hackrankid,cert,skill,badge,n_s,c_s)
-		db.session.add(new_emp)
-		db.session.commit()
-
-		return redirect(url_for('list'))
-		
-	return render_template('add.html',form=form)
-
-@app.route('/list')
-def list():
-	emp=Hacker_Rank.query.all()
-	return render_template('list.html',emp=emp)
-
-
-@app.route('/delete',methods=['GET','POST'])
-def delete():
-
-	form=DelForm()
-
-	if form.validate_on_submit():
-		try:
-			empid=form.id.data
-			emp=Hacker_Rank.query.filter_by(e_num=empid)
-			db.session.delete(emp[0])
-			db.session.commit()
-		except IndexError:
-			pass
-		
-
-		return redirect(url_for('list'))
-
-	return render_template('delete.html',form=form)
-
-
-if __name__=='__main__':
-	app.run(debug=True)
 

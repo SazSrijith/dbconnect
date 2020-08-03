@@ -16,7 +16,7 @@ class AddForm(FlaskForm):
 	c_s=SelectField('Contest/Practice:',choices=[('contest','Contest'),('practice','Practice')])
 	submit=SubmitField('Add Employee')
 
-class DelForm(FlaskForm):
+class SearchForm(FlaskForm):
 
-	id=IntegerField("Enter the ID of the employee to be delete:",validators=[DataRequired()])
-	submit=SubmitField("Delete Employee")
+	id=IntegerField("Enter the Employee ID:",validators=[DataRequired()])
+	submit=SubmitField("Confirm")
