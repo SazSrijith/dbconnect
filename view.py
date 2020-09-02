@@ -148,7 +148,7 @@ def add_skill():
 			db.session.add(new_skill)
 			db.session.commit()
 			return redirect(url_for('list_skill'))
-		return render_template('addSkill.html',form=form)
+		return render_template('skill/addSkill.html',form=form)
 	else:
 		abort(404, description="You dont have access to this URL.")
 
@@ -191,7 +191,7 @@ def list_project():
 @login_required
 def list_skill():
 	skill=Skill.query.all()
-	return render_template('listSkill.html',skill=skill)
+	return render_template('skill/listSkill.html',skill=skill)
 
 
 # To ASSIGN a PROJECT to an EMPLOYEE
@@ -291,7 +291,7 @@ def modify(recid,item):
 					db.session.add(rec)
 					db.session.commit()
 					return redirect(url_for('list_employee'))
-				return render_template('modifyEmployee.html',form=form,rec=rec)
+				return render_template('employee/modifyEmployee.html',form=form,rec=rec)
 			else:
 				return redirect(url_for('search_record', no=2))
 		else:
