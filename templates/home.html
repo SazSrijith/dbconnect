@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="jumbotron" style="font-family: 'Rowdies', cursive;">
-	<h1>Welcome Folks,</h1>
-</div>
+{% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+<div class="alert alert-info alert-dismissible" role="alert"> {{message}}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span> </button> </div>
+{% endfor %} {% endif %} {% endwith %}
 
+<div class="jumbotron">
+    {% if current_user.is_authenticated %}
+        <h2>Hi {{current_user.username}},</h2>
+    {% else %}
+        <h2>Please Log in or Sign Up.</h2>
+    {% endif %}
+</div>
 {% endblock %}

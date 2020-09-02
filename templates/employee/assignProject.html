@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron" style="font-family: Helvetica, Arial, sans-serif;">
+	<h1 >Assign Project to Employee</h1>
+	<br>
+	<form  method="POST" style="font-family: Helvetica, Arial, sans-serif;">
+		{{form.hidden_tag()}}
+		<table>
+		<tbody>
+			<tr>
+				<td style="padding:9px 9px 0px 25px;" ><h5>{{form.employee.label}}</h5></td>
+				<td ><h5>{{form.employee(class_="form-control")}}</h5></td>
+				<td style="padding:9px 9px 0px 50px" ><h5>{{form.project.label}}</h5></td>
+				<td ><h5>{{form.project(class_="form-control")}}</h5></td>
+			</tr>
+			<tr>
+				<td colspan="4" style="padding-left:235px;"><br>{{form.submit()}}</td>
+
+			</tr>
+
+		</tbody>
+	</table>
+	</form>
+</div>
+
+{% endblock %}

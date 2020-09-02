@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    <h1 style="font-family: Helvetica, Arial, sans-serif;display: inline">Score Board</h1>
+	<br>
+    <br>
+	<table border="1">
+		<tbody>
+			<tr >
+				<th style="width: 150px;text-align: center;">Project Name</th>
+				<th style="width: 150px;text-align: center;">Employee Name</th>
+				<th style="width: 150px;text-align: center;">Skill</th>
+				<th style="width: 150px;text-align: center;">Badge</th>
+				<th style="width: 150px;text-align: center;">No of Stars</th>
+                <th style="width: 150px;text-align: center;">Month</th>
+				<th style="width: 150px;text-align: center;">Score</th>
+			</tr>
+			{% for sb in scoreboard %}
+			<tr >
+				<td style="width: 150px;text-align: center;">{{sb['p name']}}</td>
+				<td style="width: 150px;text-align: center;">{{sb['emp name']}}</td>
+				<td style="width: 150px;text-align: center;">{{sb['skill name']}}</td>
+				<td style="width: 150px;text-align: center;">{{sb['badge']}}</td>
+				<td style="width: 150px;text-align: center;">{{sb['no_of_star']}}</td>
+                <td style="width: 150px;text-align: center;">{{sb['month']}}</td>
+                <td style="width: 150px;text-align: center;">{{sb['score']}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table><br>
+    <a  href="{{url_for('download_table')}}" style="font-family: Helvetica, Arial, sans-serif;">Download</a>
+
+
+</div>
+
+{% endblock %}

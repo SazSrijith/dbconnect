@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+	<table >
+		<tbody>
+		<tr><td colspan="2">
+    <h1 style="font-family: Helvetica, Arial, sans-serif;display: inline">Employee Profile</h1>
+		</td><td></td><td></td><td style="width: 26%;" rowspan="4"></td> <td style="width: 16%;text-align: center;" rowspan="4">BOX IMAGE</td></tr>
+	<tr><td colspan="3"><hr style="width:100%;text-align:left;margin-left:0"></td></tr>
+
+
+			<tr >
+				<td style="width: 180px;text-align: left;"><h4>Employee No:&nbsp;</h4></td>
+				<td style="width: 150px;text-align: left;"><h5>{{e_info['e no']}}</h5></td>
+				<td style="width: 250px;text-align: left;"><h4>Employee Name:&nbsp;</h4></td>
+				<td style="width: 150px;text-align: left;"><h5>{{e_info['e name']}}</h5></td>
+			</tr>
+		<tr >
+				<td style="width: 180px;text-align: left;"><h4>Hacker Rank ID:&nbsp;</h4></td>
+				<td style="width: 150px;text-align: left;"><h5>{{e_info['hack id']}}</h5></td>
+				<td style="width: 250px;text-align: left;"><h4>Project Name:&nbsp;</h4></td>
+				<td style="width: 150px;text-align: left;"><h5>{{e_info['p name']}}</h5></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<hr class="my-4">
+	<table border="1">
+		<tbody>
+			<tr >
+				<th style="width: 100px;text-align:center;"><h3 style="font-family: Helvetica, Arial, sans-serif;display: inline">Skills:</h3></th>
+				{% for s in e_skills %}
+					<td style="width: 60px;text-align: center;">{{s}}</td>
+				{% endfor %}
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<br>
+	<h1 style="font-family: Helvetica, Arial, sans-serif;display: inline">Scoreboard</h1>
+	<hr class="my-4">
+	<table border="1">
+		<tbody>
+			<tr >
+				<th style="width: 150px;text-align: center;">Month</th>
+				<th style="width: 150px;text-align: center;">Skill</th>
+				<th style="width: 150px;text-align: center;">Badge</th>
+				<th style="width: 150px;text-align: center;">No of Stars</th>
+				<th style="width: 150px;text-align: center;">Score</th>
+			</tr>
+			{% for sc in score %}
+			<tr >
+				<td style="width: 150px;text-align: center;">{{sc['month']}}</td>
+				<td style="width: 150px;text-align: center;">{{sc['skill']}}</td>
+				<td style="width: 150px;text-align: center;">{{sc['badge']}}</td>
+				<td style="width: 150px;text-align: center;">{{sc['no_of_stars']}}</td>
+				<td style="width: 150px;text-align: center;">{{sc['score']}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<br>
+<!--    <a  href="{{url_for('download_table',item='employee')}}" style="font-family: Helvetica, Arial, sans-serif;">Download</a>-->
+
+
+</div>
+
+{% endblock %}

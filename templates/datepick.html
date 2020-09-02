@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+        <script src="http://cdn.jsdelivr.net/bootstrap.datepicker/0.1/js/bootstrap-datepicker.js"></script>
+	<div class="container-fluid">
+		<div class="input-append date" id="datepicker" data-date="02-2012"
+         data-date-format="mm-yyyy">
+
+	 <input  type="text" readonly="readonly" name="date" >
+	 <span class="add-on"><i class="icon-th"></i></span>
+    </div>
+
+
+    </div>
+
+    <script>
+		$("#datepicker").datepicker( {
+	    format: "mm-yyyy",
+	    viewMode: "months",
+	    minViewMode: "months"
+	});
+	</script>
+
+{% endblock %}

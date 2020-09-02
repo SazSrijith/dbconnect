@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+<div class="alert alert-info alert-dismissible" role="alert"> {{message}}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span> </button> </div>
+{% endfor %} {% endif %} {% endwith %}
+
+<div class="jumbotron" style="font-family: Helvetica, Arial, sans-serif;">
+	<h1 >Provide project details</h1>
+	<br>
+	<form  method="POST" style="font-family: Helvetica, Arial, sans-serif;">
+		{{form.hidden_tag()}}
+		<table>
+		<tbody>
+			<tr>
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form.project_id.label}}</h5></td>
+				<td ><h5>{{form.project_id()}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.project_name.label}}</h5></td>
+				<td ><h5>{{form.project_name()}}</h5></td>
+			</tr>
+			<tr>
+				<td style="padding:2px 5px 0px 25px" ><h5>{{form.project_start_date.label}}</h5></td>
+				<td ><h5>{{form.project_start_date(class='datepicker')}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.project_end_date.label}}</h5></td>
+				<td ><h5>{{form.project_end_date(class='datepicker')}}</h5></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="padding-left:235px;"><br>{{form.submit()}}</td>
+
+			</tr>
+
+		</tbody>
+	</table>
+	</form>
+
+</div>
+{% endblock %}

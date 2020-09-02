@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    <h1 style="font-family: Helvetica, Arial, sans-serif;display: inline">List of all the Projects</h1>
+	<br>
+    <br>
+	<table border="1">
+		<tbody>
+			<tr >
+				<th style="width: 150px;text-align: center;">Project ID</th>
+				<th style="width: 150px;text-align: center;">Project Name</th>
+				<th style="width: 150px;text-align: center;">Project Start Date</th>
+				<th style="width: 150px;text-align: center;">Project End Date</th>
+			</tr>
+			{% for p in pro %}
+			<tr >
+
+				<td style="width: 150px;text-align: center;">{{p.project_id}}</td>
+				<td style="width: 150px;text-align: center;">{{p.project_name}}</td>
+				<td style="width: 150px;text-align: center;">{{p.project_start_date}}</td>
+				<td style="width: 150px;text-align: center;">{{p.project_end_date}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table><br>
+    <a  href="{{url_for('download_table',item='project')}}" style="font-family: Helvetica, Arial, sans-serif;">Download</a>
+
+
+</div>
+
+{% endblock %}

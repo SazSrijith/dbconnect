@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+<div class="alert alert-info alert-dismissible" role="alert"> {{message}}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span> </button> </div>
+{% endfor %} {% endif %} {% endwith %}
+		<form  method="POST" style="font-family: Helvetica, Arial, sans-serif;">
+		{{form.hidden_tag()}}
+		<table>
+		<tbody>
+			<tr>
+				<td style="padding:9px 9px 0px 25px;" ><h5>{{form.skill.label}}</h5></td>
+				<td ><h5>{{form.skill(class_="form-control")}}</h5></td>
+				<td style="padding:9px 9px 0px 50px" ><h5>{{form.month.label}}</h5></td>
+				<td ><h5>{{form.month(class_="form-control")}}</h5></td>
+				<td style="padding:9px 9px 0px 50px" ><h5>{{form.submit(class_="form-control")}}</h5></td>
+			</tr>
+		</tbody>
+		</table>
+		</form>
+
+		{% if emp_name  %}
+		<div class="container">
+			<canvas id="myChart" width="200" height="60" style="border:1px solid"></canvas>
+		</div>
+		<script>
+
+			let myChart = document.getElementById('myChart').getContext('2d') ;
+			let newChart = new Chart(myChart,{
+			type:'bar',
+			data:{
+				labels:{{ emp_name | tojson }},
+				datasets:[{
+				label:'Scores',
+				data:{{ score | tojson }},
+				backgroundColor:'Orange',
+
+				}],
+			},
+			options:{
+			title:{
+			display:true,
+			text:'Skill: {{ sname }}',
+			}
+			},
+			});
+
+		</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    <h1 style="font-family: Helvetica, Arial, sans-serif;display: inline">Skill List</h1>
+	<br>
+    <br>
+	<table border="1">
+		<tbody>
+			<tr >
+				<th style="width: 150px;text-align: center;">Skill Name</th>
+			</tr>
+			{% for s in skill %}
+			<tr >
+
+				<td style="width: 150px;text-align: center;">{{s.skill_name}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table><br>
+    <a  href="{{url_for('download_table',item='project')}}" style="font-family: Helvetica, Arial, sans-serif;">Download</a>
+
+
+</div>
+
+{% endblock %}

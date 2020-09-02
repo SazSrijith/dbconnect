@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron" style="font-family: Helvetica, Arial, sans-serif;">
+	<h1 >Update employee details</h1>
+	<br>
+	<form  method="POST" style="font-family: Helvetica, Arial, sans-serif;">
+		{{form.hidden_tag()}}
+		<table>
+		<tbody>
+			<tr>
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form.employee_id.label}}</h5></td>
+				<td ><h5>{{rec.employee_id}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.employee_first_name.label}}</h5></td>
+				<td ><h5>{{form.employee_first_name(value=rec.employee_first_name)}}</h5></td>
+			</tr>
+			<tr>
+				<td style="padding:2px 5px 0px 25px" ><h5>{{form.employee_last_name.label}}</h5></td>
+				<td ><h5>{{form.employee_last_name(value=rec.employee_last_name)}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.employee_hacker_rank_id.label}}</h5></td>
+				<td ><h5>{{form.employee_hacker_rank_id(value=rec.employee_hacker_rank_id)}}</h5></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="padding-left:235px;"><br>{{form.submit()}}</td>
+
+			</tr>
+
+		</tbody>
+	</table>
+	</form>
+
+</div>
+{% endblock %}

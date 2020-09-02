@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron" style="font-family: Helvetica, Arial, sans-serif;">
+	<h1 >Provide Skill Name</h1>
+	<br>
+	<form  method="POST" style="font-family: Helvetica, Arial, sans-serif;">
+		{{form.hidden_tag()}}
+		<table>
+		<tbody>
+			<tr>
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form.skill_name.label}}</h5></td>
+				<td ><h5>{{form.skill_name()}}</h5></td>
+				<td  style="padding:0px 0px 30px 15px;"><br>{{form.submit()}}</td>
+			</tr>
+		</tbody>
+	</table>
+	</form>
+
+</div>
+{% endblock %}

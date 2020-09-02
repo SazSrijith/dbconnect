@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    <h1 style="font-family: Helvetica, Arial, sans-serif;display: inline">List of all the Employees</h1>
+	<br>
+    <br>
+	<table class="tblCustomers table-bordered table-striped">
+		<tbody>
+			<tr >
+				<th style="width: 150px;text-align: center;">Employee ID</th>
+				<th style="width: 150px;text-align: center;">Employee Name</th>
+				<th style="width: 150px;text-align: center;">Hacker Rank ID</th>
+				<th style="width: 150px;text-align: center;">Project Name</th>
+			</tr>
+			{% for e in empprodict %}
+			<tr >
+
+				<td style="width: 150px;text-align: center;">{{e['e no']}}</td>
+				<td style="width: 150px;text-align: center;">{{e['e name']}}</td>
+				<td style="width: 150px;text-align: center;">{{e['hack id']}}</td>
+				<td style="width: 150px;text-align: center;">{{e['p name']}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table><br>
+     <a  href="{{url_for('download_table')}}" style="font-family: Helvetica, Arial, sans-serif;">Download</a>
+	 <input type="button" id="btnExport" value="Export" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="jquery.table2excel.js" type="text/javascript"></script>
+<script type="text/javascript">
+        $("#btnExport").click(function () {
+            $(".tblCustomers").table2excel({
+            	name: "My Work",
+                filename: "Table"
+            });
+        });
+</script>
+
+
+</div>
+
+{% endblock %}

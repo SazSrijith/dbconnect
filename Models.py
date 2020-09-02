@@ -1,77 +1,159 @@
-import os
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
+from __init__ import db,login_manager
+from werkzeug.security import generate_password_hash,check_password_hash
+from flask_login import UserMixin
+
+@login_manager.user_loader
+def load_user(user_id):
+	return User.query.get(user_id)
+
+class User(db.Model,UserMixin):
+	__tablename__ = 'users'
+	id = db.Column(db.Integer, primary_key=True)
+	email = db.Column(db.String(64), unique=True, index=True)
+	username = db.Column(db.String(64), unique=True, index=True)
+	pass_hash = db.Column(db.String(128))
+	is_admin = db.Column(db.Boolean)
+	emp_id = db.Column(db.Integer, db.ForeignKey('employee.employee_id'))
+
+	def __init__(self, email, username, password):
+		self.email = email
+		self.username = username
+		self.pass_hash = generate_password_hash(password=password)
+		self.is_admin = False
+
+	def make_admin(self):
+		self.is_admin = True
+
+	def add_empid(self, empid):
+		self.emp_id = empid
+
+	def check_password(self, password):
+		return check_password_hash(self.pass_hash, password)
 
 
-basedir=os.path.abspath(os.path.dirname(__file__))
 
-app=Flask(__name__)
-app.config['SECRET_KEY']='mysecretkey'
+class Employee(db.Model):
+	__tablename__='employee'
+	employee_id=db.Column(db.Integer,primary_key=True)
+	employee_first_name=db.Column(db.Text)
+	employee_last_name=db.Column(db.Text)
+	employee_hacker_rank_id=db.Column(db.Text, unique=True)
+	# employees = db.relationship('Project', secondary=proemp, backref=db.backref('projectemp', lazy='dynamic'))
+	emppro_id=db.Column(db.Integer, db.ForeignKey('project.project_id'))
+	scores = db.relationship('Score', backref='empsc')
+	userid = db.relationship('User', backref='empid')
 
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///'+os.path.join(basedir,'data.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATION']=False
-
-db=SQLAlchemy(app)
-
-
-class Hacker_Rank(db.Model):
-	__tablename__='Hacker Rank'
-	id=db.Column(db.Integer,primary_key=True)
-	project=db.Column(db.Text)
-	e_num=db.Column(db.Text)
-	e_name=db.Column(db.Text)
-	hr_userid=db.Column(db.Text)
-	cert=db.Column(db.Text)
-	skill=db.Column(db.Text)
-	badges=db.Column(db.Text)
-	n_stars=db.Column(db.Integer)
-	c_p=db.Column(db.Text)
-
-	def __init__(self,project,e_num,e_name,hr_userid,cert,skill,badges,n_stars,c_p):
-		self.project=project
-		self.e_num=e_num
-		self.e_name=e_name
-		self.hr_userid=hr_userid
-		self.cert=cert
-		self.skill=skill
-		self.badges=badges
-		self.n_stars=n_stars
-		self.c_p=c_p
-
-	def __repr__(self):
-		return f"\nEmployee Name: {self.e_name} \n<br>Employee ID: {self.e_num} \nProject: {self.project}\nHacker Rank Id: {self.hr_userid}\nCertificates: {self.cert}\nSkillset: {self.skill}\nBadges: {self.badges}\nNo of Stars: {self.n_stars}\nContest/Practice: {self.c_p}"
-
-class Shrishti(db.Model):
-	id=db.Column(db.Integer,primary_key=True)
-	date_pre=db.Column(db.Text)
-	project=db.Column(db.Text)
-	e_num=db.Column(db.Text)
-	presenter=db.Column(db.Text)
-	topic=db.Column(db.Text)
-
-	def __init__(self,date_pre,project,e_num,presenter,topic):
-		self.date_pre=date_pre
-		self.project=project
-		self.e_num=e_num
-		self.presenter=presenter
-		self.topic=topic
+	def __init__(self,employee_id,employee_first_name,employee_last_name,employee_hacker_rank_id):
+		self.employee_id=employee_id
+		self.employee_first_name=employee_first_name
+		self.employee_last_name=employee_last_name
+		self.employee_hacker_rank_id=employee_hacker_rank_id
 
 	def __repr__(self):
-		return f"\nDate of Presentation: {self.date_pre}\nProject: {self.project}\nEmployee No: {self.e_num}\nPresenter: {self.presenter}\nTopic: {self.topic}"
+		return f"\nEmployee ID: {self.employee_id}\nEmployee Name: {self.employee_first_name} {self.employee_last_name}\nEmployee Hacker Rank ID: {self.employee_hacker_rank_id}"
 
-class Pragati(db.Model):
-	id=db.Column(db.Integer,primary_key=True)
-	project=db.Column(db.Text)
-	em_num=db.Column(db.Text)
-	em_name=db.Column(db.Text)
-	no_sub=db.Column(db.Integer)
 
-	def __init__(self,project,em_no,em_name,no_sub):
-		self.project=project
-		self.em_num=em_no
-		self.em_name=em_name
-		self.no_sub=no_sub
+class Project(db.Model):
+	__tablename__ = 'project'
+	project_id = db.Column(db.Integer, primary_key=True)
+	project_name = db.Column(db.Text)
+	project_start_date = db.Column(db.Text)
+	project_end_date = db.Column(db.Text)
+	employees= db.relationship('Employee',backref='emppro')
+
+	def __init__(self, project_id, project_name, project_start_date, project_end_date):
+		self.project_id = project_id
+		self.project_name = project_name
+		self.project_start_date = project_start_date
+		self.project_end_date = project_end_date
 
 	def __repr__(self):
-		return f"\nProject: {self.project}\n<br>Employee No: {self.em_num}\nEmployeeName: {self.em_name}\nNo of Submission: {self.no_sub}"
+		return f"\nProject ID: {self.project_id} \nProject Name: {self.project_name} \nProject Start Date: {self.project_start_date}\nProject End Date: {self.project_end_date}"
 
+class Skill(db.Model):
+	__tablename__ = 'skill'
+	id = db.Column(db.Integer, primary_key=True)
+	skill_name = db.Column(db.Text)
+	scores = db.relationship('Score', backref='skillsc')
+
+	def __init__(self, skill_name):
+		self.skill_name = skill_name
+
+class Score(db.Model):
+	__tablename__ = 'score'
+	id = db.Column(db.Integer, primary_key=True)
+	month = db.Column(db.Text)
+	score = db.Column(db.Integer)
+	badge = db.Column(db.Text)
+	no_of_stars = db.Column(db.Text)
+	empsc_id = db.Column(db.Integer, db.ForeignKey('employee.employee_id'))
+	skillsc_id = db.Column(db.Integer, db.ForeignKey('skill.id'))
+
+	def __init__(self, month, score, badge, no_of_stars):
+		self.month = month
+		self.score = score
+		self.badge = badge
+		self.no_of_stars = no_of_stars
+
+
+# class ProjectEmployee(db.Model):
+# 	id=db.Column(db.Integer,primary_key=True)
+# 	project_id=db.Column(db.Integer,db.ForeignKey(ProjectMaster.project_id))
+# 	employee_id=db.Column(db.Integer,db.ForeignKey(EmployeeMaster.employee_id))
+#
+# 	def __init__(self,project_id,employee_id):
+# 		self.project_id=project_id
+# 		self.employee_id=employee_id
+#
+# 	def __repr__(self):
+# 		return f"\nProject ID: {self.project_id}\nEmployee ID: {self.employee_id}"
+
+
+
+# class SkillMaster(db.Model):
+# 	skill_id = db.Column(db.Text,primary_key=True)
+# 	skill_name = db.Column(db.Text)
+#
+# 	def __init__(self,skill_id,skill_name):
+# 		self.skill_id=skill_id
+# 		self.skill_name=skill_name
+#
+# 	def __repr__(self):
+# 		return f"\nSkill ID: {self.skill_id}\nSkill Name: {self.skill_name}"
+#
+#
+# class Certification(db.Model):
+# 	id=db.Column(db.Integer,primary_key=True)
+# 	employee_id = db.Column(db.Integer,db.ForeignKey('EmployeeMaster.employee_id'))
+# 	skill_id = db.Column(db.Integer,db.ForeignKey('SkillMaster.skill_id'))
+# 	certification_name=db.Column(db.Text)
+#
+#
+# 	def __init__(self,skill_id,employee_id,certification_name):
+# 		self.skill_id=skill_id
+# 		self.employee_id=employee_id
+# 		self.certification_name=certification_name
+#
+# 	def __repr__(self):
+# 		return f"\nEmployee ID: {self.employee_id}\nSkill ID: {self.skill_id}\nCertification Name: {self.certification_name}"
+#
+# class Scores(db.Model):
+# 	id=db.Column(db.Integer,primary_key=True)
+# 	employee_id = db.Column(db.Integer,db.ForeignKey('EmployeeMaster.employee_id'))
+# 	skill_id = db.Column(db.Integer,db.ForeignKey('SkillMaster.skill_id'))
+# 	month=db.Column(db.Text)
+# 	score=db.Column(db.Integer)
+# 	badge=db.Column(db.Text)
+# 	no_of_stars=db.Column(db.Integer)
+#
+#
+# 	def __init__(self,employee_id,skill_id,month,score,badges,no_of_stars):
+# 		self.employee_id=employee_id
+# 		self.skill_id=s_id
+# 		self.month=month
+# 		self.score=score
+# 		self.badges=badges
+# 		self.no_of_stars=no_of_stars
+#
+# 	def __repr__(self):
+# 		return f"\nEmployee ID: {self.employee_id}\nSkill ID: {self.skill_id} \nMonth: {self.month}\nScore: {self.score}\nBadge: {self.badge}\nNo of Stars: {self.no_of_stars}"

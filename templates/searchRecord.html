@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron" style="font-family: Helvetica, Arial, sans-serif;">
+    {% if no == '0'  %}
+    <h1>Remove Employee</h1>
+    {% elif no == '1' %}
+    <h1>Remove Project</h1>
+    {% elif no == '2' %}
+    <h1>Update Employee</h1>
+	{% elif no == '4' %}
+    <h1>Employee Profile</h1>
+    {% else %}
+    <h1>Update Project</h1>
+	{% endif %}
+    	<br>
+
+	<form  method="POST" style="font-family: Helvetica, Arial, sans-serif;">
+		{{form.hidden_tag()}}
+		<table>
+		<tbody>
+			<tr>
+				{% if no == '0' or no == '2' or no == '4' %}
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form.emp_id.label}}</h5></td>
+				<td ><h5>{{form.emp_id(class_="form-control")}}</h5></td>
+				{% else %}
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form.pro_id.label}}</h5></td>
+				<td ><h5>{{form.pro_id(class_="form-control")}}</h5></td>
+				{% endif %}
+			</tr>
+			<tr>
+				<td colspan="2" style="padding-left:235px;"><br>{{form.submit()}}</td>
+
+			</tr>
+
+		</tbody>
+	</table>
+	</form>
+</div>
+
+{% endblock %}

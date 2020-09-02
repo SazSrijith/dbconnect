@@ -4,46 +4,128 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Project</title>
+    <link href='https://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300&display=swap" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css2?family=Rowdies:wght@700&display=swap" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css2?family=Viga&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<!--    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css">-->
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/bootstrap.datepicker/0.1/css/datepicker.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <script src="http://cdn.jsdelivr.net/bootstrap.datepicker/0.1/js/bootstrap-datepicker.js"></script>
 </head>
-<body style="background-color:grey;">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
-        <h2 style="color:#FFFFFF;font-family: 'Viga', sans-serif;">DB Connect</h2>
-        <ul class="navbar-nav mr-auto align-right"  style="margin-left:760px;font-family: 'Viga', sans-serif;">
-            <li class="nav-item active">
-              <a class="nav-link btn btn-outline-primary" href="{{url_for('home')}}">Home </a>             
-            </li>
-            &emsp;
-            <li class="nav-item active">
-              <a class="nav-link btn btn-outline-primary" href="{{url_for('add')}}">Add&emsp;&thinsp;</a>             
-            </li>
-            &emsp;
-            <li class="nav-item active">
-              <a class="nav-link btn btn-outline-primary" href="{{url_for('list')}}">List&emsp;&thinsp;</a>             
-            </li>
-            &emsp;
-            <li class="nav-item active">
-              <a class="nav-link btn btn-outline-primary" href="{{url_for('search',no=0)}}">Update </a>
-            </li>
-            
-            &emsp;
-            <li class="nav-item active">
-              <a class="nav-link btn btn-outline-primary" href="{{url_for('search',no=1)}}">Delete </a>             
-            </li>
-        </ul>
-    </nav>
-        {% block content %}
+<body>
+<nav style="background-color:#a8c0ff">
+<ul class="nav justify-content-end"  style="height:50px;">
+  <li class="nav-item" >
+    <a   style="color: #1c1c1c;font-size:20px;" class="nav-link active" href="{{url_for('home')}}">Home</a>
+  </li>
+    {% if current_user.is_authenticated %}
+    {% if session['is_admin'] == True %}
+  <li class="nav-item active">
+      <a  style="color: #1c1c1c;font-size:20px;" class="nav-link " href="#"  data-toggle="dropdown" >
+          Project
+      </a>
+      <div class="dropdown-menu">
+
+          <a class="dropdown-item" href="{{url_for('add_project')}}">Add Project</a>
+          <a class="dropdown-item" href="{{url_for('search_record',no=3)}}">Modify Project</a>
+          <a class="dropdown-item" href="{{url_for('search_record',no=1)}}">Delete Project</a>
+
+          <a class="dropdown-item" href="{{url_for('list_project')}}">List Project</a>
+      </div>
+  </li>
+  <li>
+      <a  style="color: #1c1c1c;font-size:20px;" class="nav-link " href="#"  data-toggle="dropdown" >
+          Employee
+      </a>
+      <div class="dropdown-menu">
+          {% if session['is_admin'] == True %}
+          <a class="dropdown-item" href="{{url_for('add_employee')}}">Add Employee</a>
+          <a class="dropdown-item" href="{{url_for('assign_project')}}">Assign Project</a>
+          <a class="dropdown-item" href="{{url_for('search_record',no=2)}}">Modify Employee</a>
+          <a class="dropdown-item" href="{{url_for('search_record',no=0)}}">Delete Employee</a>
+          {% endif %}
+          <a class="dropdown-item" href="{{url_for('list_employee')}}">List Employee</a>
+      </div>
+  </li>
+    {% endif %}
+  <li>
+      <a  style="color: #1c1c1c;font-size:20px;" class="nav-link " href="#"  data-toggle="dropdown" >
+          Skill
+      </a>
+      <div class="dropdown-menu">
+          {% if session['is_admin'] == True %}
+          <a class="dropdown-item" href="{{url_for('add_skill')}}">Add Skill</a>
+          {% endif %}
+          <a class="dropdown-item" href="{{url_for('list_skill')}}">List Skill</a>
+      </div>
+  </li>
+
+  <li class="nav-item">
+    <a style="color: #1c1c1c;font-size:20px;" class="nav-link " href="#"  data-toggle="dropdown" >
+          ScoreBoard
+    </a>
+      <div class="dropdown-menu">
+
+          <a class="dropdown-item" href="{{url_for('add_score')}}">Add Score</a>
+        {% if session['is_admin'] == True %}
+          <a class="dropdown-item" href="{{url_for('list_scoreboard')}}">List Scoreboard</a>
+<!--          <a class="dropdown-item" href="{{url_for('home')}}">Modify Scoreboard</a>-->
+<!--          <a class="dropdown-item" href="{{url_for('home')}}">Delete Score</a>-->
+      </div>
+  </li>
+  <li class="nav-item">
+    <a style="color: #1c1c1c;font-size:20px;" class="nav-link " href="{{url_for('search_record',no=4)}}"  >
+          Employee Profile
+    </a>
+      {% else %}
+  </li>
+    <li class="nav-item">
+    <a style="color: #1c1c1c;font-size:20px;" class="nav-link " href="{{url_for('e_profile',recid=session['emp_no'])}}"  >
+          Employee Profile
+    </a>
+  </li>
+    {% endif %}
+    {% if session['is_admin'] == True %}
+          <li class="nav-item" >
+    <a   style="color: #1c1c1c;font-size:20px;" class="nav-link active" href="{{url_for('chart')}}">Graphs</a>
+        </li>
+          {% endif %}
+    <li class="nav-item">
+    <a style="color: #1c1c1c;font-size:20px;" class="nav-link " href="{{url_for('logout')}}"  >
+        LogOut
+    </a>
+  </li>
+    {% else %}
+    <li class="nav-item">
+    <a style="color: #1c1c1c;font-size:20px;" class="nav-link " href="{{url_for('login')}}"  >
+        Log In
+    </a>
+  </li>
+    <li class="nav-item">
+    <a style="color: #1c1c1c;font-size:20px;" class="nav-link " href="{{url_for('signup')}}"  >
+        Sign In
+    </a>
+  </li>
+    {% endif %}
+</ul>
+</nav>
+
+    {% block content %}
 
 
 
 
 
         {% endblock %}
+    </div>
 </body>
 </html>

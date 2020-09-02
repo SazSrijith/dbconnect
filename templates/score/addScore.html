@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+<div class="alert alert-info alert-dismissible" role="alert"> {{message}}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span> </button> </div>
+{% endfor %} {% endif %} {% endwith %}
+
+<div class="jumbotron" style="font-family: Helvetica, Arial, sans-serif;">
+	<h1 >Add a new entry to the scoreboard</h1>
+	<br>
+	<form  method="POST" style="font-family: Helvetica, Arial, sans-serif;">
+		{{form.hidden_tag()}}
+		<table>
+		<tbody>
+			<tr>
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form.employee.label}}</h5></td>
+				<td ><h5>{{form.employee(class_="form-control")}}</h5></td>
+				<td style="padding:2px 5px 0px 25px" ><h5>{{form.skill.label}}</h5></td>
+				<td ><h5>{{form.skill(class_="form-control")}}</h5></td>
+			</tr>
+			<tr>
+				<td style="padding:2px 5px 0px 25px" ><h5>{{form.month.label}}</h5></td>
+				<td ><h5>{{form.month(class_="form-control")}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form.score.label}}</h5></td>
+				<td ><h5>{{form.score()}}</h5></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="padding-left:235px;"><br>{{form.submit()}}</td>
+
+			</tr>
+
+		</tbody>
+	</table>
+	</form>
+<!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>-->
+<!--        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>-->
+<!--        <script src="http://cdn.jsdelivr.net/bootstrap.datepicker/0.1/js/bootstrap-datepicker.js"></script>-->
+<!--	<div class="container-fluid">-->
+<!--		<div class="input-append date" id="datepicker" data-date="02-2012"-->
+<!--         data-date-format="mm-yyyy">-->
+
+<!--	 <input  type="text" readonly="readonly" name="date" >-->
+<!--	 <span class="add-on">X</span>-->
+    </div>
+
+
+    </div>
+
+    <script>
+		$("#datepicker").datepicker( {
+	    format: "mm-yyyy",
+	    viewMode: "months",
+	    minViewMode: "months"
+	});
+	</script>
+
+</div>
+{% endblock %}
