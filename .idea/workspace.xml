@@ -20,12 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47cded7a-32e4-40dc-b6d8-2acb1b24e415" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/data.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/addSkill.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/listSkill.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/modifyEmployee.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/employee/addEmployee.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/employee/addEmployee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/employee/listEmployee.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/employee/listEmployee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/employee/modifyEmployee.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/employee/modifyEmployee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/score/listScoreboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/score/listScoreboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/signup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,8 +39,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -92,6 +95,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="463" y="107" key="FileChooserDialogImpl" timestamp="1598208354229">

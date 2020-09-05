@@ -8,37 +8,58 @@
 
 
 <div class="jumbotron" style="font-family: Helvetica, Arial, sans-serif;">
-	{% for error in form.employee_id.errors %}
+
+	<h1 >Provide employee details</h1>
+	<br>
+	<form  method="POST" style="font-family: Helvetica, Arial, sans-serif;">
+		{{form1.hidden_tag()}}
+		<table>
+		<tbody>
+			<tr>
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form1.employee_id.label}}</h5></td>
+				<td ><h5>{{form1.employee_id()}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form1.employee_first_name.label}}</h5></td>
+				<td ><h5>{{form1.employee_first_name()}}</h5></td>
+			</tr>
+			{% if form1.employee_id.errors %}
+			{% for error in form1.employee_id.errors %}
+			<tr>
+				<td colspan="2">
    			 <div class="alert alert-danger alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 				 		{{error}}
-			 </div>
+			 </div></td>
+				</tr>
  		 {% endfor %}
-	<h1 >Provide employee details</h1>
-	<br>
-	<form  method="POST" style="font-family: Helvetica, Arial, sans-serif;">
-		{{form.hidden_tag()}}
-		<table>
-		<tbody>
+
+			{% endif %}
 			<tr>
-				<td style="padding:2px 5px 0px 25px;" ><h5>{{form.employee_id.label}}</h5></td>
-				<td ><h5>{{form.employee_id()}}</h5></td>
-				<td style="padding:2px 5px 0px 50px" ><h5>{{form.employee_first_name.label}}</h5></td>
-				<td ><h5>{{form.employee_first_name()}}</h5></td>
+				<td style="padding:2px 5px 0px 25px" ><h5>{{form1.employee_last_name.label}}</h5></td>
+				<td ><h5>{{form1.employee_last_name()}}</h5></td>
+				<td style="padding:2px 5px 0px 50px" ><h5>{{form1.employee_hacker_rank_id.label}}</h5></td>
+				<td ><h5>{{form1.employee_hacker_rank_id()}}</h5></td>
 			</tr>
 			<tr>
-				<td style="padding:2px 5px 0px 25px" ><h5>{{form.employee_last_name.label}}</h5></td>
-				<td ><h5>{{form.employee_last_name()}}</h5></td>
-				<td style="padding:2px 5px 0px 50px" ><h5>{{form.employee_hacker_rank_id.label}}</h5></td>
-				<td ><h5>{{form.employee_hacker_rank_id()}}</h5></td>
-			</tr>
-			<tr>
-				<td colspan="2" style="padding-left:235px;"><br>{{form.submit()}}</td>
+				<td colspan="2" style="padding-left:235px;"><br>{{form1.submit1()}}</td>
 				
 			</tr>
 			
+		</tbody>
+		</table></form>
+		<h2 align="center">Alternatively</h2>
+	<form method='POST'  enctype="multipart/form-data">
+		{{form2.hidden_tag()}}
+	<table>
+		<tbody>
+			<tr>
+				<td style="padding:2px 5px 0px 25px;" ><h5>{{form2.file.label}}</h5></td>
+				<td ><h5>{{form2.file}}</h5></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="padding-left:235px;"><br>{{form2.submit2()}}</td>
+			</tr>
 		</tbody>
 	</table>
 	</form>

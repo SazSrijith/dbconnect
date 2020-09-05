@@ -1,9 +1,10 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="jumbotron">
-    <h1 style="font-family: Helvetica, Arial, sans-serif;display: inline">List of all the Employees</h1>
-	<br>
-    <br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
 	<table class="tblCustomers table-bordered table-striped">
 		<tbody>
 			<tr >
@@ -22,10 +23,6 @@
 			</tr>
 			{% endfor %}
 		</tbody>
-	</table><br>
-     <a  href="{{url_for('download_table',item='employee')}}" style="font-family: Helvetica, Arial, sans-serif;">Download</a>
-
-
-</div>
-
-{% endblock %}
+	</table>
+</body>
+</html>

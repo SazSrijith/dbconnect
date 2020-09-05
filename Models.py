@@ -43,11 +43,12 @@ class Employee(db.Model):
 	scores = db.relationship('Score', backref='empsc')
 	userid = db.relationship('User', backref='empid')
 
-	def __init__(self,employee_id,employee_first_name,employee_last_name,employee_hacker_rank_id):
+	def __init__(self,employee_id,employee_first_name,employee_last_name,employee_hacker_rank_id,emppro=None):
 		self.employee_id=employee_id
 		self.employee_first_name=employee_first_name
 		self.employee_last_name=employee_last_name
 		self.employee_hacker_rank_id=employee_hacker_rank_id
+		self.emppro = emppro
 
 	def __repr__(self):
 		return f"\nEmployee ID: {self.employee_id}\nEmployee Name: {self.employee_first_name} {self.employee_last_name}\nEmployee Hacker Rank ID: {self.employee_hacker_rank_id}"

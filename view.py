@@ -1,10 +1,14 @@
-from forms import AddEmployee,AddProject,AssignProject,SearchEmployee,SearchProject,AddSkill,AddScore,LoginForm,SignUpForm,MakeAdmin,ChartForm
+from forms import Uploadfile,AddEmployee,AddProject,AssignProject,SearchEmployee,SearchProject,AddSkill,AddScore,LoginForm,SignUpForm,MakeAdmin,ChartForm
 from __init__ import app,db
 from models import  Project,Employee,Skill,Score,User
-from flask import Flask,render_template,url_for,redirect,request,flash,abort,session
+from flask import Flask,render_template,url_for,redirect,request,flash,abort,session,make_response
 from flask_login import login_user,login_required,logout_user
 import pandas as pd
 from sqlalchemy.exc import IntegrityError
+import csv
+import io
+import xlrd
+import pdfkit
 
 # Home Page
 
@@ -35,9 +39,11 @@ def login():
 
                 if user.is_admin:
                     session['is_admin']=True
+                    session['emp_name'] = "admin"
+                    session['emp_no'] = None
                 else:
                     rec=Employee.query.filter_by(employee_id=user.emp_id).first()
-                    session['emp_name'] = rec.employee_first_name + " " + rec.employee_last_name
+                    session['emp_name'] = ""
                     session['emp_no']=user.emp_id
                     session['is_admin']=False
                 flash("Logged in successfully")
@@ -90,25 +96,59 @@ def signup():
 @app.route('/addemployee',methods=['GET','POST'])
 @login_required
 def add_employee():
-	if session['is_admin']:
-		form=AddEmployee()
-		if form.validate_on_submit():
-			employee_id=form.employee_id.data
-			employee_first_name=form.employee_first_name.data
-			employee_last_name=form.employee_last_name.data
-			employee_hacker_rank_id=form.employee_hacker_rank_id.data
-			new_emp=Employee(employee_id,employee_first_name,employee_last_name,employee_hacker_rank_id)
+	if not session['is_admin']:
+		abort(404, description="You dont have access to this URL.")
+	form1 = AddEmployee()
+	form2 = Uploadfile()
+	if form1.submit1.data and form1.validate():
+		employee_id = form1.employee_id.data
+		employee_first_name=form1.employee_first_name.data
+		employee_last_name=form1.employee_last_name.data
+		employee_hacker_rank_id=form1.employee_hacker_rank_id.data
+		new_emp=Employee(employee_id,employee_first_name,employee_last_name,employee_hacker_rank_id)
+		db.session.add(new_emp)
+		try:
+			db.session.commit()
+			return redirect(url_for('list_employee'))
+		except IntegrityError:
+			flash("Employee with the same Employee ID or Hacker Rank ID  already Exists")
+			db.session.rollback()
+			return render_template('employee/addEmployee.html', form1=form1,form2=form2)
+	if form2.submit2.data and form2.validate() :
+		### HAVE SOME WORK TO DO HERE ########################################################################
+		try:
+			data = pd.read_excel(form2.file.data)
+		except xlrd.biffh.XLRDError():
+			try:
+				data = pd.read_csv(form2.file.data)
+			except AttributeError:
+				flash("Please Upload a valid format (xls,xlsx or csv )")
+				return redirect(url_for('add_employee'))
+		################################################################################################################################################
+		df = pd.DataFrame(data, columns=["Employee Number","Employee Name","HackerRank UserId","Project"])
+		print(df)
+		for ind in df.index:
+			skipped_list=[]
+			try :
+				employee_id = int(df['Employee Number'][ind])
+				print(str(df['Employee Number'][ind]))
+				pro = Project.query.filter_by(project_name=str(df['Project'][ind])).first()
+				employee_first_name = str(df['Employee Name'][ind])
+				employee_last_name = ""
+				employee_hacker_rank_id = str(df['HackerRank UserId'][ind])
+			except ValueError:
+				continue
+			new_emp = Employee(employee_id, employee_first_name, employee_last_name, employee_hacker_rank_id,pro)
 			db.session.add(new_emp)
 			try:
 				db.session.commit()
-				return redirect(url_for('list_employee'))
 			except IntegrityError:
-				flash("Employee with the same Employee ID or Hacker Rank ID  already Exists")
+				print("Skipped Employee:{}".format(employee_id))
+				skipped_list.append(employee_id)
 				db.session.rollback()
-				return render_template('employee/addEmployee.html', form=form)
-		return render_template('employee/addEmployee.html',form=form)
-	else:
-		abort(404, description="You dont have access to this URL.")
+		return redirect(url_for('list_employee'))
+	return render_template('employee/addEmployee.html',form1=form1,form2=form2)
+
 
 # To Add a Project to the Database
 
@@ -404,9 +444,10 @@ def e_profile(recid):
 			e_info['p name'] = 'Not Assigned'
 		score = Score.query.filter_by(empsc_id=emp.employee_id).all()
 		e_skills=[]
+		score_list = []
 		if score:
 			found=True
-			score_list=[]
+
 			for sc in score:
 				skill=Skill.query.filter_by(id=sc.skillsc_id).first()
 				case = {'month': sc.month, 'skill': skill.skill_name, 'badge': sc.badge, 'no_of_stars': sc.no_of_stars,
@@ -508,34 +549,69 @@ def chart():
 				empscores.append(score.score)
 	return render_template('chart.html', emp_name=empname, score=empscores, form=form)
 
-	# # if skill_id != '0':
-	# # 	scores = Score.query.filter_by(skillsc_id=int(skill_id)).all()
-	# # 	skill = Skill.query.filter_by(id=int(skill_id)).first()
-	# # 	sname=skill.skill_name
-	# # 	for score in scores:
-	# # 		ename = Employee.query.filter_by(employee_id=score.empsc_id).first()
-	# # 		month = score.month
-	# # 		name_and_month=ename.employee_first_name + " " + ename.employee_last_name + "("+month+")"
-	# # 		empname.append(name_and_month)
-	# # 		empscores.append(score.score)
-	#
-	# return render_template('chart.html',emp_name=empname,score=empscores,form=form)
 
 
+@app.route('/download_table/<item>')
+def download_table(item):
+	if item == 'employee':
+		emp = Employee.query.all()
+		empprodict = []
+		if emp:
+			for e in emp:
+				pro = Project.query.filter_by(project_id=e.emppro_id).first()
+				case = {'e no': e.employee_id, 'e name': e.employee_first_name + " " + e.employee_last_name,
+						'hack id': e.employee_hacker_rank_id}
+				if pro:
+					case['p name'] = pro.project_name
+				else:
+					case['p name'] = 'Not Assigned'
+				empprodict.append(case)
+		df = pd.DataFrame(empprodict)
+		output = io.StringIO()
+		writer = csv.writer(output)
+		l = ["Employee Number","Employee Name","HackerRank UserId","Project"]
+		writer.writerow(l)
+		response = make_response(output.getvalue())
+		for ind in df.index:
+			l = []
+			l.append(int(df['e no'][ind]))
+			l.append(str(df['e name'][ind]))
+			l.append(str(df['hack id'][ind]))
+			l.append(str(df['p name'][ind]))
+			writer.writerow(l)
+			response = make_response(output.getvalue())
+		response.headers['Content-Disposition'] = 'attachment; filename=employeeData.csv'
+		response.headers["Content-type"] = "text/csv"
+		return response
 
 
-
-
-
-
-@app.route('/download_table')
-def download_table():
-	url = "http://127.0.0.1:5000/listemployee"
-	table = pd.read_html(url)
-	for t in table:
-		print(t)
-	# table.to_excel("downloads/datascore.xlsx",index=False)
-	return redirect(url_for('list_employee'))
+@app.route('/download_table_pdf')
+@login_required
+def download_table_pdf():
+	if session['is_admin']:
+		emp=Employee.query.all()
+		empprodict = []
+		if emp:
+			for e in emp:
+				pro = Project.query.filter_by(project_id=e.emppro_id).first()
+				case = {'e no': e.employee_id, 'e name': e.employee_first_name + " " + e.employee_last_name,
+						'hack id': e.employee_hacker_rank_id}
+				if pro:
+					case['p name'] = pro.project_name
+				else:
+					case['p name'] = 'Not Assigned'
+				empprodict.append(case)
+			r = render_template('table.html', empprodict=empprodict)
+			# # path_wkhtmltopdf = r'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
+			config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+			pdf = pdfkit.from_string(r, False)
+			response = make_response(pdf)
+			response.headers['Content-Disposition'] = 'attachment; filename=employeeData.pdf'
+			response.headers["Content-type"] = "application/pdf"
+			return response
+		return render_template('table.html',emp=emp)
+	else:
+		abort(404, description="You dont have access to this URL.")
 
 #
 

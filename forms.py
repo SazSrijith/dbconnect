@@ -1,8 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField, SelectField, PasswordField
+from wtforms import StringField, IntegerField, SubmitField, SelectField, PasswordField, FileField, validators
 from wtforms.fields.html5 import DateField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo , Regexp
 
+
+class Uploadfile(FlaskForm):
+	file = FileField(u'Excel File', validators=[DataRequired()])
+	submit2 = SubmitField('Upload')
 
 class ChartForm(FlaskForm):
 	skill = SelectField('Select skill', choices=[])
@@ -19,9 +23,6 @@ class SignUpForm(FlaskForm):
 	email = StringField('Email', validators=[DataRequired(), Email()])
 	username = StringField("Username", validators=[DataRequired()])
 	employee_id = IntegerField("Employee ID:", validators=[DataRequired()])
-	employee_first_name = StringField("Employee First Name:", validators=[DataRequired()])
-	employee_last_name = StringField("Employee Last Name:")
-	employee_hacker_rank_id = StringField("Hacker Rank ID:", validators=[DataRequired()])
 	password = PasswordField('Password', validators=[DataRequired(), EqualTo('pass_confirm', message="Passwords must match!")])
 	pass_confirm = PasswordField('Confirm Password', validators=[DataRequired()])
 	submit = SubmitField('Register')
@@ -44,7 +45,7 @@ class AddEmployee(FlaskForm):
 	employee_first_name = StringField("Employee First Name:", validators=[DataRequired()])
 	employee_last_name = StringField("Employee Last Name:")
 	employee_hacker_rank_id = StringField("Hacker Rank ID:", validators=[DataRequired()])
-	submit = SubmitField('Confirm')
+	submit1 = SubmitField('Confirm')
 
 class AddSkill(FlaskForm):
 	skill_name = StringField("Skill Name:")
